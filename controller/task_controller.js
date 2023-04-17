@@ -1,84 +1,96 @@
 const TaskDB = require('../models/Task');
 
 //get all task
-module.exports.getAllTasks = async function(req,res){
-    try{
+module.exports.getAllTasks = async function (req, res) {
+    try {
+        //find all task
         let allTasks = await TaskDB.find({});
+    
         return res.status(200).json({
-            message:"All Tasks",
+            message: "All Tasks",
             allTasks
         })
     }
-    catch(err){
+    catch (err) {
+        console.log(err);
+
         return res.status(400).json({
-            message:"error"
+            message: "error"
         })
     }
 }
 
-//view task
-module.exports.viewTask = async function(req,res){
-    try{
+//view specific task
+module.exports.viewTask = async function (req, res) {
+    try {
+        //find task by id
         let Task = await TaskDB.findById(req.params.id);
+        
         return res.status(200).json({
-            message:"Task",
+            message: "Task",
             Task
         })
     }
-    catch(err){
+    catch (err) {
         console.log(err);
+
         return res.status(500).json({
-            message:"Internal Server Error"
+            message: "Internal Server Error"
         })
     }
 }
 
-//create task
-module.exports.createTask = async function(req,res){
-    try{
+//create new task
+module.exports.createTask = async function (req, res) {
+    try {
+        //create new task
         let Task = await TaskDB.create(req.body);
+
         return res.status(201).json({
-            message:"New Task Created",
+            message: "New Task Created",
             Task
         })
     }
-    catch(err){
+    catch (err) {
         console.log(err);
         return res.status(500).json({
-            message:"Internal Server Error"
+            message: "Internal Server Error"
         })
     }
 }
 
 //update task
-module.exports.updateTask = async function(req,res){
-    try{
-        await TaskDB.findByIdAndUpdate(req.params.id,req.body);
+module.exports.updateTask = async function (req, res) {
+    try {
+        //update task
+        await TaskDB.findByIdAndUpdate(req.params.id, req.body);
 
         return res.status(200).json({
-            message:"Task update successfully",
+            message: "Task update successfully",
         })
     }
-    catch(err){
+    catch (err) {
         console.log(err);
         return res.status(500).json({
-            message:"Internal Server Error"
+            message: "Internal Server Error"
         })
     }
 }
 
 //delete task
-module.exports.deleteTask = async function(req,res){
-    try{
+module.exports.deleteTask = async function (req, res) {
+    try {
+        //find task and delete 
         await TaskDB.findByIdAndDelete(req.params.id);
+        
         return res.status(200).json({
-            message:"Task delete successfully",
+            message: "Task delete successfully",
         })
     }
-    catch(err){
+    catch (err) {
         console.log(err);
         return res.status(500).json({
-            message:"Internal Server Error"
+            message: "Internal Server Error"
         })
     }
 }

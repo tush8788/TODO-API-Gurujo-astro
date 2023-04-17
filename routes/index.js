@@ -1,4 +1,5 @@
 const express = require('express');
+//task controller
 const taskController = require('../controller/task_controller');
 const router = express.Router();
 
@@ -13,4 +14,5 @@ router.put('/task/:id',taskController.updateTask);
 //delete task
 router.delete('/task/:id',taskController.deleteTask);
 
+//export
 module.exports=router;
