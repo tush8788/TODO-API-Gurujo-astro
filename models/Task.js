@@ -14,6 +14,8 @@ const taskSchema = new mongoose.Schema({
         enum: ["completed","incomplete"],
         default:"incomplete",
     }
+},{
+    timestamps:true
 });
 
 const Task = mongoose.model("Task",taskSchema);
