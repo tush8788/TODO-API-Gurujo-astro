@@ -67,4 +67,18 @@ module.exports.updateTask = async function(req,res){
     }
 }
 
-
+//delete task
+module.exports.deleteTask = async function(req,res){
+    try{
+        await TaskDB.findByIdAndDelete(req.params.id);
+        return res.status(200).json({
+            message:"Task delete successfully",
+        })
+    }
+    catch(err){
+        console.log(err);
+        return res.status(500).json({
+            message:"Internal Server Error"
+        })
+    }
+}
