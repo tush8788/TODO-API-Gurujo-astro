@@ -8,5 +8,7 @@ router.get('/task',taskController.getAllTasks);
 router.get('/task/:id',taskController.viewTask);
 //create new Task
 router.post('/task',taskController.createTask);
+//update task
+router.put('/task/:id',taskController.updateTask);
 
 module.exports=router;

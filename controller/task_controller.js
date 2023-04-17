@@ -49,3 +49,22 @@ module.exports.createTask = async function(req,res){
         })
     }
 }
+
+//update task
+module.exports.updateTask = async function(req,res){
+    try{
+        await TaskDB.findByIdAndUpdate(req.params.id,req.body);
+
+        return res.status(200).json({
+            message:"Task update successfully",
+        })
+    }
+    catch(err){
+        console.log(err);
+        return res.status(500).json({
+            message:"Internal Server Error"
+        })
+    }
+}
+
+
