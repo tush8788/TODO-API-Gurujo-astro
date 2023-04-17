@@ -32,3 +32,20 @@ module.exports.viewTask = async function(req,res){
         })
     }
 }
+
+//create task
+module.exports.createTask = async function(req,res){
+    try{
+        let Task = await TaskDB.create(req.body);
+        return res.status(201).json({
+            message:"New Task Created",
+            Task
+        })
+    }
+    catch(err){
+        console.log(err);
+        return res.status(500).json({
+            message:"Internal Server Error"
+        })
+    }
+}
