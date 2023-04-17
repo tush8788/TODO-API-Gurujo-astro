@@ -36,13 +36,13 @@
 ![plot](.screenshort/allTask.png)
 
 2. View specific task
-![plot](.screenshort/specificTask.png)
+![plot](./screenshort/specificTask.png)
 
 3. Create new Tasks
-![plot](.screenshort/createNewTask.png)
+![plot](./screenshort/createNewTask.png)
 
 4. Update task
-![plot](.screenshort/updateTask.png)
+![plot](./screenshort/updateTask.png)
 
 5. Delete Tasks
-![plot](.screenshort/deleteTask.png)
+![plot](./screenshort/deleteTask.png)
