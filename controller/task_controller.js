@@ -5,7 +5,7 @@ module.exports.getAllTasks = async function (req, res) {
     try {
         //find all task
         let allTasks = await TaskDB.find({});
-    
+
         return res.status(200).json({
             message: "All Tasks",
             allTasks
@@ -25,7 +25,7 @@ module.exports.viewTask = async function (req, res) {
     try {
         //find task by id
         let Task = await TaskDB.findById(req.params.id);
-        
+
         return res.status(200).json({
             message: "Task",
             Task
@@ -34,8 +34,15 @@ module.exports.viewTask = async function (req, res) {
     catch (err) {
         console.log(err);
 
-        return res.status(500).json({
-            message: "Internal Server Error"
+        let statusCode = 500, message = "Internal Server Error";
+
+       if (err.name == "CastError") {
+            statusCode = 403;
+            message = "Wrong Task id send"
+        }
+
+        return res.status(statusCode).json({
+            message: message
         })
     }
 }
@@ -53,8 +60,16 @@ module.exports.createTask = async function (req, res) {
     }
     catch (err) {
         console.log(err);
-        return res.status(500).json({
-            message: "Internal Server Error"
+
+        let statusCode = 500, message = "Internal Server Error";
+
+        if (err.name == "ValidationError") {
+            statusCode = 403;
+            message = "field validation or field missing error";
+        }
+
+        return res.status(statusCode).json({
+            message: message
         })
     }
 }
@@ -71,8 +86,24 @@ module.exports.updateTask = async function (req, res) {
     }
     catch (err) {
         console.log(err);
-        return res.status(500).json({
-            message: "Internal Server Error"
+
+        let statusCode = 500, message = "Internal Server Error";
+
+        if (err.name == "ReferenceError") {
+            statusCode = 403;
+            message = "field missing error";
+        }
+        else if (err.name == "CastError") {
+            statusCode = 403;
+            message = "Wrong Task id send"
+        }
+        else if (err.name == "TypeError") {
+            statusCode = 403;
+            message = "field missmatch"
+        }
+
+        return res.status(statusCode).json({
+            message: message
         })
     }
 }
@@ -82,15 +113,22 @@ module.exports.deleteTask = async function (req, res) {
     try {
         //find task and delete 
         await TaskDB.findByIdAndDelete(req.params.id);
-        
+
         return res.status(200).json({
             message: "Task delete successfully",
         })
     }
     catch (err) {
         console.log(err);
-        return res.status(500).json({
-            message: "Internal Server Error"
+        let statusCode = 500, message = "Internal Server Error";
+
+        if (err.name == "CastError") {
+            statusCode = 403;
+            message = "Wrong Task id send"
+        }
+
+        return res.status(statusCode).json({
+            message: message
         })
     }
 }
