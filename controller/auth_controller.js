@@ -3,7 +3,6 @@ const jsonwebtoken = require('jsonwebtoken');
 //create user
 module.exports.createUser = async function(req,res){
     try{
-        // console.log(req.body)
         if(req.body.password != req.body.confirmpassword){
             return res.status(401).json({
                 message: "Password not match",

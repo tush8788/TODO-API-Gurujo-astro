@@ -3,9 +3,16 @@ const TaskDB = require('../models/Task');
 //get all task
 module.exports.getAllTasks = async function (req, res) {
     try {
-        //find all task
-        let allTasks = await TaskDB.find({user:req.user.id});
 
+        let allTasks
+        if(req.user.isAdmin==true){
+            //find all task
+            allTasks = await TaskDB.find({});
+        }
+        else{
+            allTasks = await TaskDB.find({user:req.user.id});
+        }
+        
         return res.status(200).json({
             message: "All Tasks",
             allTasks
@@ -56,6 +63,13 @@ module.exports.viewTask = async function (req, res) {
 //create new task
 module.exports.createTask = async function (req, res) {
     try {
+        //if reqested user is admin then admin can not create task
+        if(req.user.isAdmin==true){
+            return res.status(400).json({
+                message:"Admin Can not create task"
+            })
+        }
+
         let {title,description,status} = req.body;
         //create new task
         let Task = await TaskDB.create({
@@ -89,6 +103,12 @@ module.exports.createTask = async function (req, res) {
 //update task
 module.exports.updateTask = async function (req, res) {
     try {
+         //if reqested user is admin then admin can not create task
+         if(req.user.isAdmin==true){
+            return res.status(400).json({
+                message:"Admin Can not update task"
+            })
+        }
         let task = await TaskDB.findById(req.params.id);
         
         if(!task||task.user != req.user.id){
@@ -129,12 +149,19 @@ module.exports.updateTask = async function (req, res) {
 //delete task
 module.exports.deleteTask = async function (req, res) {
     try {
+
         // //find task and delete 
         // await TaskDB.findByIdAndDelete(req.params.id);
         let task = await TaskDB.findById(req.params.id);
-
-        if(!task || task.user != req.user.id){
-            return res.status(402).json({
+        if(req.user.isAdmin==true){
+            if(!task){
+                return res.status(404).json({
+                    message:"task not found"
+                })
+            }
+        }
+        else if(!task || task.user != req.user.id){
+            return res.status(404).json({
                 message:"Unauthorize to delete task or task not found"
             })
         }
