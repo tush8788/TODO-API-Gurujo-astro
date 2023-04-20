@@ -26,9 +26,9 @@ module.exports.viewTask = async function (req, res) {
         //find task by id
         let Task = await TaskDB.findById(req.params.id);
 
-        if(Task.user != req.user.id){
+        if(!Task||Task.user != req.user.id){
             return res.status(401).json({
-                message: "User Not Mactch",
+                message:"Unauthorize to delete task or task not found"
             })
         }
 
@@ -89,9 +89,15 @@ module.exports.createTask = async function (req, res) {
 //update task
 module.exports.updateTask = async function (req, res) {
     try {
-        //update task
-        await TaskDB.findByIdAndUpdate(req.params.id, req.body);
-
+        let task = await TaskDB.findById(req.params.id);
+        
+        if(!task||task.user != req.user.id){
+            return res.status(402).json({
+                message:"Unauthorize to delete task or task not found"
+            })
+        }
+        await task.updateOne(req.body);
+    
         return res.status(200).json({
             message: "Task update successfully",
         })
@@ -123,8 +129,17 @@ module.exports.updateTask = async function (req, res) {
 //delete task
 module.exports.deleteTask = async function (req, res) {
     try {
-        //find task and delete 
-        await TaskDB.findByIdAndDelete(req.params.id);
+        // //find task and delete 
+        // await TaskDB.findByIdAndDelete(req.params.id);
+        let task = await TaskDB.findById(req.params.id);
+
+        if(!task || task.user != req.user.id){
+            return res.status(402).json({
+                message:"Unauthorize to delete task or task not found"
+            })
+        }
+
+        await task.deleteOne();
 
         return res.status(200).json({
             message: "Task delete successfully",
