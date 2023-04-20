@@ -4,7 +4,7 @@ const TaskDB = require('../models/Task');
 module.exports.getAllTasks = async function (req, res) {
     try {
         //find all task
-        let allTasks = await TaskDB.find({});
+        let allTasks = await TaskDB.find({user:req.user.id});
 
         return res.status(200).json({
             message: "All Tasks",
@@ -25,6 +25,12 @@ module.exports.viewTask = async function (req, res) {
     try {
         //find task by id
         let Task = await TaskDB.findById(req.params.id);
+
+        if(Task.user != req.user.id){
+            return res.status(401).json({
+                message: "User Not Mactch",
+            })
+        }
 
         return res.status(200).json({
             message: "Task",
@@ -50,8 +56,14 @@ module.exports.viewTask = async function (req, res) {
 //create new task
 module.exports.createTask = async function (req, res) {
     try {
+        let {title,description,status} = req.body;
         //create new task
-        let Task = await TaskDB.create(req.body);
+        let Task = await TaskDB.create({
+            title:title,
+            description:description,
+            status:status,
+            user:req.user.id
+        });
 
         return res.status(201).json({
             message: "New Task Created",
