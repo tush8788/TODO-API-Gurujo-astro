@@ -13,6 +13,8 @@ router.post('/task',taskController.createTask);
 router.put('/task/:id',taskController.updateTask);
 //delete task
 router.delete('/task/:id',taskController.deleteTask);
+//user 
+router.use('/user',require('./user'));
 
 //export
 module.exports=router;
