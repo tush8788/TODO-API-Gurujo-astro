@@ -24,4 +24,13 @@ passport.use(new jwtStrategy(opts, async function(jwtpayload,done){
     }
 }))
 
+passport.adminOrNot = function(req,res,next){
+    if(req.user.isAdmin==true){
+        return next();
+    }
+    return res.status(401).json({
+        message:"Unauthorized"
+    })
+}
+
 module.exports=passport;

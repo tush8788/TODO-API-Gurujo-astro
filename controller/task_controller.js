@@ -109,6 +109,7 @@ module.exports.updateTask = async function (req, res) {
                 message:"Admin Can not update task"
             })
         }
+        
         let task = await TaskDB.findById(req.params.id);
         
         if(!task||task.user != req.user.id){
