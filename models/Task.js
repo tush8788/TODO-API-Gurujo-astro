@@ -13,6 +13,10 @@ const taskSchema = new mongoose.Schema({
         type:String,
         enum: ["completed","incomplete"],
         default:"incomplete",
+    },
+    user:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"User"
     }
 },{
     timestamps:true
