@@ -3,19 +3,31 @@ const TaskDB = require('../models/Task');
 //get all task
 module.exports.getAllTasks = async function (req, res) {
     try {
-
+        //add pagination 
+        let page=1,limit=0,count=0;
+        if(req.query.page){
+            page=parseInt(req.query.page);
+            limit=2;
+        }
         let allTasks
         if(req.user.isAdmin==true){
             //find all task
-            allTasks = await TaskDB.find({});
+            allTasks = await TaskDB.find({}).skip((page-1)*limit).limit(limit);
+            // count = await TaskDB.find({}).skip((page-1)*limit).limit(2).countDocuments();
+            count = await TaskDB.find({}).countDocuments();
+            count = Math.round(count/2);
+            // console.log(count);
         }
         else{
-            allTasks = await TaskDB.find({user:req.user.id});
+            allTasks = await TaskDB.find({user:req.user.id}).skip((page-1)*limit).limit(limit);
+            count = await TaskDB.find({}).skip((page-1)*limit).limit(2).countDocuments();
+            // console.log(count);
         }
         
         return res.status(200).json({
             message: "All Tasks",
-            allTasks
+            allTasks,
+            pages:count
         })
     }
     catch (err) {
