@@ -18,6 +18,7 @@ router.put('/:id',passport.authenticate('jwt',{session:false}),taskController.up
 //delete task
 router.delete('/:id',passport.authenticate('jwt',{session:false}),taskController.deleteTask);
 
+//sort task given status
 router.get('/status/:status',passport.authenticate('jwt',{session:false}),taskController.taskStatusWise);
 
 //export
