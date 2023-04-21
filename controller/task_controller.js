@@ -109,7 +109,7 @@ module.exports.updateTask = async function (req, res) {
                 message:"Admin Can not update task"
             })
         }
-        
+
         let task = await TaskDB.findById(req.params.id);
         
         if(!task||task.user != req.user.id){
@@ -185,5 +185,30 @@ module.exports.deleteTask = async function (req, res) {
         return res.status(statusCode).json({
             message: message
         })
+    }
+}
+
+//sort task given status
+module.exports.taskStatusWise = async function(req,res){
+    try{
+        let tasks;
+        if(req.user.isAdmin==true){
+            tasks = await TaskDB.find({status:req.params.status});
+        }
+        else{
+            tasks = await TaskDB.find({user:req.user.id,status:req.params.status});
+        }
+        return res.status(200).json({
+            message:"Tasks",
+            tasks
+        })
+    }
+    catch(err){
+        console.log(err);
+        let statusCode = 500, message = "Internal Server Error";
+
+        return res.status(statusCode).json({
+            message: message
+        }) 
     }
 }
