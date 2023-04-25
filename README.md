@@ -116,5 +116,5 @@ Bonus features:
 7. all users [authentication needed]
     1. get req :- http://127.0.0.1:8000/admin/allusers
 
-8. delete user []
+8. delete user [authentication needed]
     1. delete req :- http://127.0.0.1:8000/admin/deleteuser/64421b601277fe65ee1ceafd <--user id
